@@ -69,7 +69,7 @@ int main(int argc, char * argv[]) {
 	vector<vector<double> > netStructure;
 	netStructure = getNetStructure(argv[1]);
 
-	cout << "here1" <<endl;
+	// cout << "here1" <<endl;
 
 	// define weight/input/memory precision from wrapper
 	param->synapseBit = atoi(argv[2]);              // precision of synapse weight
@@ -113,11 +113,11 @@ int main(int argc, char * argv[]) {
 	double maxPESizeNM, maxTileSizeCM, numPENM;
 	vector<int> markNM;
 	vector<int> pipelineSpeedUp;
-	cout << "here2" <<endl;
+	// cout << "here2" <<endl;
 	markNM = ChipDesignInitialize(inputParameter, tech, cell, false, netStructure, &maxPESizeNM, &maxTileSizeCM, &numPENM);
-	cout << "here2.1" << endl;
+	// cout << "here2.1" << endl;
 	pipelineSpeedUp = ChipDesignInitialize(inputParameter, tech, cell, true, netStructure, &maxPESizeNM, &maxTileSizeCM, &numPENM);
-	cout << "here2.2" << endl;
+	// cout << "here2.2" << endl;
 	double desiredNumTileNM, desiredPESizeNM, desiredNumTileCM, desiredTileSizeCM, desiredPESizeCM;
 	int numTileRow, numTileCol;
 	
@@ -125,7 +125,7 @@ int main(int argc, char * argv[]) {
 	vector<vector<double> > utilizationEachLayer;
 	vector<vector<double> > speedUpEachLayer;
 	vector<vector<double> > tileLocaEachLayer;
-	cout << "here3" <<endl;
+	// cout << "here3" <<endl;
 	numTileEachLayer = ChipFloorPlan(true, false, false, netStructure, markNM, 
 					maxPESizeNM, maxTileSizeCM, numPENM, pipelineSpeedUp,
 					&desiredNumTileNM, &desiredPESizeNM, &desiredNumTileCM, &desiredTileSizeCM, &desiredPESizeCM, &numTileRow, &numTileCol);	
@@ -183,24 +183,24 @@ int main(int argc, char * argv[]) {
 	cout << endl;
 	cout << endl;
 	double numComputation = 0;
-	cout << "here4"<<endl;
+	// cout << "here4"<<endl;
 	for (int i=0; i<netStructure.size(); i++) {
 		numComputation += 2*(netStructure[i][0] * netStructure[i][1] * netStructure[i][2] * netStructure[i][3] * netStructure[i][4] * netStructure[i][5]);
 	}
-	cout << "here5" << endl;
+	// cout << "here5" << endl;
 	ChipInitialize(inputParameter, tech, cell, netStructure, markNM, numTileEachLayer,
 					numPENM, desiredNumTileNM, desiredPESizeNM, desiredNumTileCM, desiredTileSizeCM, desiredPESizeCM, numTileRow, numTileCol);
-	cout << "here6" <<endl;
+	// cout << "here6" <<endl;
 	double chipHeight, chipWidth, chipArea, chipAreaIC, chipAreaADC, chipAreaAccum, chipAreaOther, chipAreaArray;
 	double CMTileheight = 0;
 	double CMTilewidth = 0;
 	double NMTileheight = 0;
 	double NMTilewidth = 0;
 	vector<double> chipAreaResults;
-	cout << "here7"<<endl;
+	// cout << "here7"<<endl;
 	chipAreaResults = ChipCalculateArea(inputParameter, tech, cell, desiredNumTileNM, numPENM, desiredPESizeNM, desiredNumTileCM, desiredTileSizeCM, desiredPESizeCM, numTileRow, 
 					&chipHeight, &chipWidth, &CMTileheight, &CMTilewidth, &NMTileheight, &NMTilewidth);		
-	cout << "here8"<<endl;
+	// cout << "here8"<<endl;
 	chipArea = chipAreaResults[0];
 	chipAreaIC = chipAreaResults[1];
 	chipAreaADC = chipAreaResults[2];
@@ -241,11 +241,11 @@ int main(int argc, char * argv[]) {
 	double coreEnergyADC = 0;
 	double coreEnergyAccum = 0;
 	double coreEnergyOther = 0;
-	cout << "here9"<<endl;
+	// cout << "here9"<<endl;
 	if (param->synchronous){
 		// calculate clkFreq
 		for (int i=0; i<netStructure.size(); i++) {		
-			cout << i << endl; 
+			// cout << i << endl; 
 			ChipCalculatePerformance(inputParameter, tech, cell, i, argv[2*i+4], argv[2*i+4], argv[2*i+5], netStructure[i][6],
 						netStructure, markNM, numTileEachLayer, utilizationEachLayer, speedUpEachLayer, tileLocaEachLayer,
 						numPENM, desiredPESizeNM, desiredTileSizeCM, desiredPESizeCM, CMTileheight, CMTilewidth, NMTileheight, NMTilewidth,

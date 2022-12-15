@@ -91,21 +91,21 @@ vector<int> ChipDesignInitialize(InputParameter& inputParameter, Technology& tec
 	*maxPESizeNM = 0;
 	*maxTileSizeCM = 0;
 	*numPENM = 0;
-	for (int i=0;i<numLayer;i++){
-		for(int j=0;j<netStructure[i].size();j++){
-			cout << "netStructure["<<i<<"]["<<j<<"]= " <<netStructure[i][j]<< endl;
-		}
-	}
+	// for (int i=0;i<numLayer;i++){
+	// 	for(int j=0;j<netStructure[i].size();j++){
+	// 		cout << "netStructure["<<i<<"]["<<j<<"]= " <<netStructure[i][j]<< endl;
+	// 	}
+	// }
 	vector<int> markNM;
 	
 	if (param->novelMapping) {
 		// define number of PE in COV layers
-		cout << "h1_3" << endl;
+		// cout << "h1_3" << endl;
 		int most = 0;
 		int numPE = 0;
 		
 		for (int i=0; i<numLayer; i++) {
-			cout << "numLayer=" << numLayer<<" i="<< i<< " netStructure[i][3]="<<netStructure[i][3] << " netStructure[i][4]="<<netStructure[i][4]<< endl;
+			// cout << "numLayer=" << numLayer<<" i="<< i<< " netStructure[i][3]="<<netStructure[i][3] << " netStructure[i][4]="<<netStructure[i][4]<< endl;
 			int temp = netStructure[i][3]*netStructure[i][4];
 			int count = 1;
 			for (int j=0; j<numLayer; j++) {
@@ -120,7 +120,7 @@ vector<int> ChipDesignInitialize(InputParameter& inputParameter, Technology& tec
 		}
 		*numPENM = numPE;
 		// mark the layers that use novel mapping
-		cout << "h1_4"<<endl;
+		// cout << "h1_4"<<endl;
 		for (int i=0; i<numLayer; i++) {
 			
 			if ((netStructure[i][3]*netStructure[i][4]== (*numPENM))
@@ -136,25 +136,25 @@ vector<int> ChipDesignInitialize(InputParameter& inputParameter, Technology& tec
 				*maxTileSizeCM = max(minCube, (*maxTileSizeCM));
 			}
 		}
-		cout << "h1_5" << endl;
+		// cout << "h1_5" << endl;
 	} else {
-		cout << "h1_6 " << endl;
+		// cout << "h1_6 " << endl;
 		// all layers use conventional mapping
 		for (int i=0; i<numLayer; i++) {
 			markNM.push_back(0);
 			minCube = pow(2, ceil((double) log2((double) netStructure[i][5]*(double) numColPerSynapse) ) );
 			*maxTileSizeCM = max(minCube, (*maxTileSizeCM));
 		}
-		cout << "h1_7" << endl;
+		// cout << "h1_7" << endl;
 	}
-	cout << "h1_8" << endl;
+	// cout << "h1_8" << endl;
 	// for pipeline system
 	vector<int> pipelineSpeedUp;
 	if (param->pipeline) {
 		// find max and min IFM size --> define how much the system can be speed-up
 		int maxIFMSize = netStructure[0][0];
 		int minIFMSize = maxIFMSize;
-		cout << "hi_9" << endl;
+		// cout << "hi_9" << endl;
 		for (int i=0; i<numLayer; i++) {
 			if (netStructure[i][3] != 1) {
 				int thisIFMSize = netStructure[i][0];
@@ -163,7 +163,7 @@ vector<int> ChipDesignInitialize(InputParameter& inputParameter, Technology& tec
 				}
 			}
 		}
-		cout << "hi_10" << endl;
+		// cout << "hi_10" << endl;
 		// justify the speed-up degree is necessary
 		int maxSpeedUpDegree = int(maxIFMSize/minIFMSize);
 		if (maxSpeedUpDegree < param->speedUpDegree) {
@@ -173,20 +173,20 @@ vector<int> ChipDesignInitialize(InputParameter& inputParameter, Technology& tec
 		}
 		// define the pipeline speed-up
 		int boundIFMSize = ceil((double) maxIFMSize/(param->speedUpDegree));
-		cout << "hi_11" << endl;
+		// cout << "hi_11" << endl;
 		for (int i=0; i<numLayer; i++) {
 			int speedUp = ceil((double) pow((netStructure[i][0]/boundIFMSize), 2));
 			pipelineSpeedUp.push_back(speedUp);
 		}
-		cout << "hi_12" << endl;
+		// cout << "hi_12" << endl;
 	}
-	cout << "hi_13" << endl;
+	// cout << "hi_13" << endl;
 	if (pip) {
 		return pipelineSpeedUp;
 	} else {
 		return markNM;
 	}
-	cout << "hi_14" << endl;
+	// cout << "hi_14" << endl;
 }
 
 
@@ -194,7 +194,7 @@ vector<vector<double> > ChipFloorPlan(bool findNumTile, bool findUtilization, bo
 					double maxPESizeNM, double maxTileSizeCM, double numPENM, const vector<int> &pipelineSpeedUp,
 					double *desiredNumTileNM, double *desiredPESizeNM, double *desiredNumTileCM, double *desiredTileSizeCM, double *desiredPESizeCM, int *numTileRow, int *numTileCol) {
 	
-	cout << "Inside ChipFloorPlan" << endl;
+	// cout << "Inside ChipFloorPlan" << endl;
 	int numRowPerSynapse, numColPerSynapse;
 	numRowPerSynapse = param->numRowPerSynapse;
 	numColPerSynapse = param->numColPerSynapse;
@@ -598,7 +598,7 @@ double ChipCalculatePerformance(InputParameter& inputParameter, Technology& tech
 							double *readLatency, double *readDynamicEnergy, double *leakage, double *bufferLatency, double *bufferDynamicEnergy, double *icLatency, double *icDynamicEnergy, 
 							double *coreLatencyADC, double *coreLatencyAccum, double *coreLatencyOther, double *coreEnergyADC, double *coreEnergyAccum, double *coreEnergyOther, bool CalculateclkFreq, double *clkPeriod) {
 	
-	cout << "Inside ChipCalculatePerformance"<<endl;
+	// cout << "Inside ChipCalculatePerformance"<<endl;
 	int numRowPerSynapse, numColPerSynapse;
 	numRowPerSynapse = param->numRowPerSynapse;
 	numColPerSynapse = param->numColPerSynapse;
@@ -612,10 +612,10 @@ double ChipCalculatePerformance(InputParameter& inputParameter, Technology& tech
 	// load in whole file 
 	vector<vector<double> > inputVector;
 	inputVector = LoadInInputData(inputfile); 
-	cout << inputVector.size() <<  " " << inputVector[0].size()<< endl;
+	// cout << inputVector.size() <<  " " << inputVector[0].size()<< endl;
 	vector<vector<double> > newMemory;
 	newMemory = LoadInWeightData(newweightfile, numRowPerSynapse, numColPerSynapse, param->maxConductance, param->minConductance);
-	cout << newMemory.size() << " "<< newMemory[0].size() << endl;
+	// cout << newMemory.size() << " "<< newMemory[0].size() << endl;
 	*readLatency = 0;
 	*readDynamicEnergy = 0;
 	*leakage = 0;
