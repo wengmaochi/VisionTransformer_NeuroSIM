@@ -38,21 +38,21 @@ def write_matrix_weight(input_matrix,filename):
 
 def write_matrix_activation_conv(input_matrix,fill_dimension,length,filename):
     input_dim = input_matrix.shape
-    print("write_matrix_activation_conv")
-    print(input_dim)  
+    # print("write_matrix_activation_conv")
+    # print(input_dim)  
     filled_matrix_b = np.zeros([input_matrix.shape[2],input_matrix.shape[1]*length],dtype=np.str)
     filled_matrix_bin,scale = dec2bin(input_matrix[0,:],length)
     for i,b in enumerate(filled_matrix_bin):
         filled_matrix_b[:,i::length] =  b.transpose()
-    print("out")
-    print(filled_matrix_b.shape)
+    # print("out")
+    # print(filled_matrix_b.shape)
     np.savetxt(filename, filled_matrix_b, delimiter=",",fmt='%s')
 
 
 def write_matrix_activation_fc(input_matrix,fill_dimension,length,filename):
     input_dim = input_matrix.shape
-    print("weight_matrix_activation")
-    print(input_dim)
+    # print("weight_matrix_activation")
+    # print(input_dim)
     # if(len(input_dim) > 2 ): input_matrix = input_matrix.reshape(input_dim[1],input_dim[2])
     filled_matrix_b = np.zeros([input_matrix.shape[1],length],dtype=np.str)
     filled_matrix_bin,scale = dec2bin(input_matrix[0,:],length)

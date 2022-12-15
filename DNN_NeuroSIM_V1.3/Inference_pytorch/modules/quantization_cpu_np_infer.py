@@ -34,9 +34,9 @@ class QConv2d(nn.Conv2d):
         self.target = target
         self.name = name
         self.model = model
-        print(self.weight)
-        print(wl_weight)
-        print("here")
+        # print(self.weight)
+        # print(wl_weight)
+        # print("here")
         self.scale  = wage_initializer.wage_init_(self.weight, self.wl_weight, factor=1.0)
         self.scale = 1
 
