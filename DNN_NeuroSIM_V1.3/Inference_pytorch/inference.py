@@ -100,12 +100,17 @@ elif args.model == 'ViT_linear':
 elif args.model == "ViT_conv_test":
     from models import ViT_conv_test
     modelCF = ViT_conv_test.ViT(args=args, chw=(3,32,32), n_patches=2, n_block=1, num_classes=10, MLP_hidden=3072, logger=logger, N=768, head=2, D=768)
-elif args.model == "ViT_conv_one_layer":
-    from models import ViT_conv
-    modelCF = ViT_conv.ViT(args=args,chw=(3,32,32),n_patches=2,n_block=1,num_classes=10,MLP_hidden=3072,logger=logger,head=12,D=768)
-elif args.model == "ViT_conv":
-    from models import ViT_conv
-    modelCF = ViT_conv.ViT(args=args,chw=(3,32,32),n_patches=2,n_block=12,num_classes=10,MLP_hidden=3072,logger=logger,head=12,D=768)
+# elif args.model == "ViT_conv_one_layer":
+#     from models import ViT_conv
+#     modelCF = ViT_conv_cifar10.ViT(args=args,chw=(3,32,32),n_patches=2,n_block=1,num_classes=10,MLP_hidden=3072,logger=logger,head=12,D=768)
+elif args.model == "ViT_conv_cifar10":
+    if args.dataset != 'cifar10' : raise
+    from models import ViT_conv_cifar10
+    modelCF = ViT_conv_cifar10.ViT(args=args,chw=(3,32,32),n_patches=2,n_block=12,num_classes=10,MLP_hidden=3072,logger=logger,head=12,D=768)
+elif args.model == "ViT_conv_imagenet":
+    if args.dataset != 'imagenet' : raise
+    from models import ViT_conv_imagenet
+    modelCF = ViT_conv_imagenet.ViT(args=args,chw=(3,224,224),n_patches=14,n_block=12,num_classes=1000,MLP_hidden=3072,logger=logger,head=12,D=768)
 else:
     raise ValueError("Unknown model type")
 
@@ -125,7 +130,7 @@ criterion = torch.nn.CrossEntropyLoss()
 # criterion = wage_util.SSE()
 
 # for data, target in test_loader:
-test_data_num = 30
+# test_data_num = 30
 for i, (data, target) in enumerate(test_loader):
     if i==0:
         hook_handle_list = hook.hardware_evaluation(modelCF,args.wl_weight,args.wl_activate,args.model,args.mode)
@@ -142,12 +147,12 @@ for i, (data, target) in enumerate(test_loader):
     if i==0:
         hook.remove_hook_list(hook_handle_list)
 
-    if i == test_data_num: break
-test_loss = test_loss / 1# average over number of mini-batch
-acc = 100. * correct / test_data_num
+    # if i == test_data_num: break
+# test_loss = test_loss / 1# average over number of mini-batch
+# acc = 100. * correct / test_data_num
 
-# test_loss = test_loss / len(test_loader)  # average over number of mini-batch
-# acc = 100. * correct / len(test_loader.dataset)
+test_loss = test_loss / len(test_loader)  # average over number of mini-batch
+acc = 100. * correct / len(test_loader.dataset)
 
 accuracy = acc.cpu().data.numpy()
 
@@ -165,8 +170,8 @@ if args.inference:
     print(args.vari)
 
 logger('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)'.format(
-	# test_loss, correct, len(test_loader.dataset), acc))
-    test_loss, correct, test_data_num, acc))
+	test_loss, correct, len(test_loader.dataset), acc))
+    # test_loss, correct, test_data_num, acc))
 
 
 print(modelCF)
