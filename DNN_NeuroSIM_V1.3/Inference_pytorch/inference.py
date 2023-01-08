@@ -79,7 +79,7 @@ elif args.dataset == 'imagenet':
 else:
     raise ValueError("Unknown dataset type")
 
-assert args.model in ['VGG8', 'DenseNet40', 'ResNet18', 'ViT_linear',"ViT_conv_test","ViT_conv"], args.model
+assert args.model in ['VGG8', 'DenseNet40', 'ResNet18', 'ViT_linear',"ViT_conv_test","ViT_conv_imagenet","ViT_conv_cifar10"], args.model
 if args.model == 'VGG8':
     from models import VGG
     model_path = './log/VGG8.pth'   # WAGE mode pretrained model
