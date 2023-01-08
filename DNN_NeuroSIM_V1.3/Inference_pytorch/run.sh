@@ -1,1 +1,1 @@
-python3 inference.py --dataset cifar10 --model ViT_conv
+python3 inference.py --dataset cifar10 --model ViT_conv_cifar10

@@ -104,11 +104,11 @@ elif args.model == "ViT_conv_test":
 #     from models import ViT_conv
 #     modelCF = ViT_conv_cifar10.ViT(args=args,chw=(3,32,32),n_patches=2,n_block=1,num_classes=10,MLP_hidden=3072,logger=logger,head=12,D=768)
 elif args.model == "ViT_conv_cifar10":
-    if args.dataset != 'cifar10' : raise
+    # if args.dataset != 'cifar10' : raise
     from models import ViT_conv_cifar10
     modelCF = ViT_conv_cifar10.ViT(args=args,chw=(3,32,32),n_patches=2,n_block=12,num_classes=10,MLP_hidden=3072,logger=logger,head=12,D=768)
 elif args.model == "ViT_conv_imagenet":
-    if args.dataset != 'imagenet' : raise
+    # if args.dataset != 'imagenet' : raise
     from models import ViT_conv_imagenet
     modelCF = ViT_conv_imagenet.ViT(args=args,chw=(3,224,224),n_patches=14,n_block=12,num_classes=1000,MLP_hidden=3072,logger=logger,head=12,D=768)
 else:
