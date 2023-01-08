@@ -140,6 +140,7 @@ class MHA_(nn.Module):
         self.Sc_V_10 = Conv2d(N,self.Dh,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
         self.Sc_V_11 = Conv2d(N,self.Dh,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
         self.Sc_V_12 = Conv2d(N,self.Dh,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
+        self.final_map=Conv2d(N,self.D ,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
     def forward(self, x):
         # x is 1*N*D
         # For pytorch, D*(N*1)   cause pytorch is channel first
@@ -265,8 +266,12 @@ class MHA_(nn.Module):
         out_10 = self.Sc_V_10(v_10,nn.Parameter(Sc_10,requires_grad=False))
         out_11 = self.Sc_V_11(v_11,nn.Parameter(Sc_11,requires_grad=False))
         out_12 = self.Sc_V_12(v_12,nn.Parameter(Sc_12,requires_grad=False))
-
-        out = torch.concat((out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8,out_9,out_10,out_11,out_12),axis = 2).reshape(1,self.N,self.D)
+        # out = torch.concat((out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8,out_9,out_10,out_11,out_12),axis = 2).reshape(1,self.N,self.D)
+        # permute out from 1*N*D*1 to 1*D*N*1
+        out = torch.concat((out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8,out_9,out_10,out_11,out_12),axis = 2).permute(0,2,1,3)
+        out = self.final_map(out)
+        # out is 1*D*N*1
+        out = out.permute(0,2,1,3).reshape(1,self.N,self.D)
         return out
 
 
