@@ -140,7 +140,7 @@ class MHA_(nn.Module):
         self.Sc_V_10 = Conv2d(N,self.Dh,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
         self.Sc_V_11 = Conv2d(N,self.Dh,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
         self.Sc_V_12 = Conv2d(N,self.Dh,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
-        self.final_map=Conv2d(N,self.D ,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
+        self.final_map=Conv2d(self.D,self.D ,args=args,logger=logger,kernel_size=(1,1),stride=(1,1),padding=0)
     def forward(self, x):
         # x is 1*N*D
         # For pytorch, D*(N*1)   cause pytorch is channel first
